@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Artist.Name}} | Groupie Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./scripts/main.js" type="module" defer></script>
+    <link rel="shortcut icon"
+        href="https://static.vecteezy.com/system/resources/previews/002/986/080/non_2x/letter-g-logo-design-template-free-vector.jpg"
+        type="image/x-icon">
+    <style type="text/tailwindcss">
+        .item.active .content {
+            @apply p-2 h-auto ease-in-out
+        }
+
+        .item.active .icon-up {
+            @apply block
+        }
+
+        .item.active .icon-down {
+            @apply hidden
+        }
+
+        .item:not(.active) .icon-up {
+            @apply hidden
+        }
+
+        .item:not(.active) .icon-down {
+            @apply block
+        }
+
+        .item:not(.active) .content {
+            @apply h-0 overflow-hidden py-0
+        }
+
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body class="dark:bg-slate-900">
+    <div class="flex justify-between items-center dark:text-white dark:bg-slate-800 bg-gray-100 p-5 px-6 relative">
+        <a href="/"><img
+                src="https://static.vecteezy.com/system/resources/previews/002/986/080/non_2x/letter-g-logo-design-template-free-vector.jpg"
+                alt="Logo" class="h-10"></a>
+        <div class="absolute left-1/2 -translate-x-1/2 inline-flex flex-col justify-center text-gray-500 w-1/3">
+            <div class="relative">
+                <input id="search" type="text"
+                    class="w-full p-2 pl-8 rounded border border-gray-200 bg-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:border-transparent"
+                    placeholder="Search" />
+                <svg class="w-4 h-4 absolute left-2.5 top-3.5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <ul id="results" class="bg-white w-full mt-2 absolute max-h-[300px] overflow-y-scroll">
+                </ul>
+            </div>
+        </div>
+        <div class="flex gap-4">
+            <a href="/artists" class="text-md">Artists</a>
+            <a href="/concerts" class="text-md">Concert Dates</a>
+        </div>
+    </div>
+
+    <div class="flex mt-20">
+        <div class="md:mx-auto">
+            <div
+                class="grid grid-cols-2 gap-6 min-w-[700px] border p-8 rounded-lg shadow-lg w-full dark:bg-slate-800 dark:text-white dark:border-slate-600">
+                <img class="mr-12" src="{{.Artist.Image}}" width="300px" alt="">
+                <div class="flex-col gap-4 mr-4">
+                    <h1 class="font-semibold text-3xl mb-4">{{.Artist.Name}}</h1>
+                    {{range .Artist.Members}}
+                    <p class="text-sm">{{.}}</p>
+                    {{end}}
+                </div>
+                <div>
+                    <h1 class="col-span-2 text-xl font-semibold my-4">General Infos</h1>
+                    <h1 class="text-sm">Creation Date: {{ .Artist.CreationDate }}</h1>
+                    <h1 class="text-sm">First Album: {{ .Artist.FirstAlbum }}</h1>
+                </div>
+                <h1 class="col-span-2 text-xl font-semibold">Concert Dates</h1>
+                {{range $key, $value := .Relations.DatesLocations }}
+                <div class="item">
+                    <div class="header p-3 bg-slate-950 cursor-pointer flex justify-between items-center">
+                        <h1>{{$key}}</h1>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-chevron-up icon-up block" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-chevron-down icon-down" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1-.708.708l-6 6a.5.5 0 0 1 0-.708" />
+                        </svg>
+                    </div>
+                    <div class="content bg-slate-900 rounded-b-lg transition-all">
+                        {{range $value}}
+                        <p class="text-sm my-1">{{.}}</p>
+                        {{end}}
+                    </div>
+                </div>
+                {{end}}
+                <!-- Google Maps Integration -->
+                <div class="col-span-2 mt-8">
+                    <h1 class="text-xl font-semibold mb-4 dark:text-white">Concert Locations Map</h1>
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <script type="module">
+            import { initMap } from './scripts/geolocalization.js';
+        
+            let locationData = {{.Locations}};
+            
+            function loadGoogleMapsScript() {
+                const script = document.createElement('script');
+                script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCY_DORiaW68dDA7JaLmhSzSh0-2QYZQks';
+                script.onload = () => initMap(locationData);
+                document.body.appendChild(script);
+            }
+        
+            window.onload = loadGoogleMapsScript;
+        </script>
+    </div>
+</body>
+
+</html>

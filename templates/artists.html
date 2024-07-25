@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Artists | Groupie Tracker</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="./scripts/filters.js" defer></script>
+	<script src="./scripts/search.js" defer></script>
+	<link rel="shortcut icon"
+		href="https://static.vecteezy.com/system/resources/previews/002/986/080/non_2x/letter-g-logo-design-template-free-vector.jpg"
+		type="image/x-icon">
+	<style>
+		input[type=range]::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			pointer-events: all;
+			width: 16px;
+			height: 16px;
+			background-color: #fff;
+			border-radius: 50%;
+			box-shadow: 0 0 0 1px #C6C6C6;
+			cursor: pointer;
+		}
+
+		input[type=range]::-moz-range-thumb {
+			-webkit-appearance: none;
+			pointer-events: all;
+			width: 16px;
+			height: 16px;
+			background-color: #fff;
+			border-radius: 50%;
+			box-shadow: 0 0 0 1px #C6C6C6;
+			cursor: pointer;
+		}
+
+		input[type=range]::-webkit-slider-thumb:hover {
+			background: #f7f7f7;
+		}
+
+		input[type=range]::-webkit-slider-thumb:active {
+			box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
+			-webkit-box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
+		}
+
+		input[type="range"] {
+			-webkit-appearance: none;
+			appearance: none;
+			height: 2px;
+			width: 100%;
+			position: absolute;
+			background-color: #C6C6C6;
+			pointer-events: none;
+		}
+	</style>
+</head>
+
+<body class="dark:bg-slate-900">
+	<div class="flex justify-between items-center dark:text-white dark:bg-slate-800 bg-gray-100 p-5 px-6 relative">
+		<a href="/"><img
+				src="https://static.vecteezy.com/system/resources/previews/002/986/080/non_2x/letter-g-logo-design-template-free-vector.jpg"
+				alt="Logo" class="h-10"></a>
+		<div class="absolute left-1/2 -translate-x-1/2 inline-flex flex-col justify-center text-gray-500 w-1/3">
+			<div class="relative">
+				<input id="search" type="text"
+					class="w-full p-2 pl-8 rounded border border-gray-200 bg-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:border-transparent"
+					placeholder="Search" />
+				<svg class="w-4 h-4 absolute left-2.5 top-3.5" xmlns="http://www.w3.org/2000/svg" fill="none"
+					viewBox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+						d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+				</svg>
+				<ul id="results" class="bg-white w-full mt-2 absolute">
+				</ul>
+			</div>
+		</div>
+		<div class="flex gap-4">
+			<a href="/artists" class="text-md">Artists</a>
+			<a href="/concerts" class="text-md">Concert Dates</a>
+		</div>
+	</div>
+
+
+
+	<div class="flex max-auto justify-center text-white my-10">
+		<div class="flex flex-col justify-center w-56 bg-slate-800 p-4">
+			<h1 class="font-semibold text-sm mb-4">Creation Date</h1>
+			<div class="relative w-full max-w-xl grid">
+				<input type="range" min="1950" max="2024" name="fromCreationYear" value="1950" id="slider-1"
+					class="absolute w-full">
+				<input type="range" min="1950" max="2024" name="toCreationYear" value="2024" id="slider-2"
+					class="absolute w-full">
+				<div class="flex justify-between mt-4">
+					<label for="slider-1" class="text-sm">1950</label>
+					<label for="slider-2" class="text-sm">2024</label>
+				</div>
+			</div>
+
+		</div>
+		<div class="flex flex-col justify-center w-56 bg-slate-800 p-4">
+			<h1 class="font-semibold text-sm mb-4">First Album Date</h1>
+			<div class="relative w-full max-w-xl grid">
+				<input type="range" min="1950" max="2024" name="fromAlbumYear" value="1950" id="slider-3"
+					class="absolute w-full">
+				<input type="range" min="1950" max="2024" name="toAlbumYear" value="2024" id="slider-4"
+					class="absolute w-full">
+				<div class="flex justify-between mt-4">
+					<label for="slider-3" class="text-sm">1950</label>
+					<label for="slider-4" class="text-sm">2024</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="flex flex-col justify-center w-56 bg-slate-800 p-4">
+			<h1 class="font-semibold text-sm mb-4">Members</h1>
+			<div class="relative w-full max-w-xl grid">
+				<input type="range" min="1" max="8" name="membersMin" value="1" id="slider-5"
+					class="absolute w-full">
+				<input type="range" min="1" max="8" name="membersMax" value="8" id="slider-6"
+					class="absolute w-full">
+				<div class="flex justify-between mt-4">
+					<label for="slider-5" class="text-sm">1</label>
+					<label for="slider-6" class="text-sm">8</label>
+				</div>
+			</div>
+		</div>
+		<div class="locations flex flex-col gap-1 bg-slate-800 p-4">
+			<div class="flex gap-1 items-center">
+				<p class="text-sm">Locations :</p>
+			</div>
+			<select name="location" id="location"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option value="">All Locations</option>
+                {{range .Locations}}
+                <option value="{{.}}">{{.}}</option>
+                {{end}}
+            </select>
+		</div>
+	</div>
+
+	<div class="flex mx-auto justify-center">
+		<div class="grid grid-cols-3 gap-10 text-white" id="artists-container">
+			{{template "artist_block" .Artists}}
+		</div>
+	</div>
+</body>
+
+</html>

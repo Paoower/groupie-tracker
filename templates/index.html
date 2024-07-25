@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groupie Tracker | Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon"
+        href="https://static.vecteezy.com/system/resources/previews/002/986/080/non_2x/letter-g-logo-design-template-free-vector.jpg"
+        type="image/x-icon">
+    <script src="./scripts/main.js" type="module" defer></script>
+</head>
+
+<body class="dark:bg-slate-900 dark:text-white h-screen">
+    <div class="flex justify-between items-center dark:text-white dark:bg-slate-800 bg-gray-100 p-5 px-6 relative">
+        <a href="/"><img
+                src="https://static.vecteezy.com/system/resources/previews/002/986/080/non_2x/letter-g-logo-design-template-free-vector.jpg"
+                alt="Logo" class="h-10"></a>
+        <div class="flex gap-4">
+            <a href="/artists" class="text-md">Artists</a>
+            <a href="/concerts" class="text-md">Concert Dates</a>
+        </div>
+    </div>
+    <div class="flex justify-center items-center mt-20 mb-10 flex-col gap-4">
+        <div class="w-1/3 flex flex-col items-center gap-6">
+            <h1 class="text-3xl dark:text-white text-white font-semibold">Groupie Tracker</h1>
+        </div>
+    </div>
+
+    <div class="absolute left-1/2 -translate-x-1/2 inline-flex flex-col justify-center text-gray-500 w-1/3">
+        <div class="relative">
+            <input id="search" type="text"
+                class="w-full p-2 pl-8 rounded border border-gray-200 bg-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:border-transparent"
+                placeholder="Search" />
+            <svg class="w-4 h-4 absolute left-2.5 top-3.5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <ul id="results" class="bg-white w-full mt-2 absolute max-h-[250px] overflow-y-scroll">
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
