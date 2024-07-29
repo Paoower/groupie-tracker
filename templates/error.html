@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Groupie Tracker | Error</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="dark:bg-slate-900 dark:text-white h-screen">
+	<div class="flex justify-between items-center dark:text-white dark:bg-slate-800 bg-gray-100 p-5 px-6 relative">
+        <a href="/"><img
+                src="https://static.vecteezy.com/system/resources/previews/002/986/080/non_2x/letter-g-logo-design-template-free-vector.jpg"
+                alt="Logo" class="h-10"></a>
+        <div class="flex gap-4">
+            <a href="/artists" class="text-md">Artists</a>
+            <a href="/concerts" class="text-md">Concert Dates</a>
+        </div>
+    </div>
+	<div class="flex flex-col items-center justify-center gap-4 mt-20">
+		<p class="font-semibold text-5xl">{{.ErrStatus}}</p>
+		<p class="font-thin text-lg">{{.ErrMsg}}</p>
+	</div>
+</body>
+
+</html>

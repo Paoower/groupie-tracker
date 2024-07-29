@@ -32,7 +32,7 @@ func ErrorHandler(w http.ResponseWriter, err error) {
 	}
 
 	// Parse the template
-	t, err := template.ParseFiles("templates/errorPage.html")
+	t, err := template.ParseFiles("templates/error.html")
 	if err != nil {
 		// If we can't parse the template, fall back to a simple error message
 		log.Printf("Error parsing template: %v", err)

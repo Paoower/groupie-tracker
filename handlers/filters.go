@@ -17,6 +17,7 @@ func FiltersHandler(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
 		ErrorHandler(w, errors.New("500 | Internal server error: Could not decode json"))
+		return
 	}
 
 	var filtered []datatypes.Artist
@@ -73,6 +74,7 @@ func FiltersHandler(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("templates/artist_block.html")
 	if err != nil {
 		ErrorHandler(w, errors.New("500 | Internal server error: Could not parse template"))
+		return
 	}
 	t.ExecuteTemplate(w, "artist_block", filtered)
 }

@@ -7,15 +7,26 @@ import (
 	"net/http"
 )
 
-const RED = "\033[31;1m"
-const GREEN = "\033[32;1m"
-const YELLOW = "\033[33;1m"
-const NONE = "\033[0m"
-
 func main() {
 	log.SetFlags(log.Ltime)
 	log.SetPrefix("groupie-tracker:")
 
+	go getData()
+
+	scripts := http.FileServer(http.Dir("./templates/scripts"))
+	http.Handle("/scripts/", http.StripPrefix("/scripts/", scripts))
+
+	http.HandleFunc("/searchbar", handlers.SearchBarHandler)
+	http.HandleFunc("/filters", handlers.FiltersHandler)
+	http.HandleFunc("/artists", handlers.ArtistsHandler)
+	http.HandleFunc("/artist", handlers.ArtistHandler)
+	http.HandleFunc("/", handlers.HomeHandler)
+
+	log.Println(utils.GREEN, "Server started at http://localhost:8080", utils.NONE)
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func getData() {
 	err := utils.ReadJson("json/artists.json", &utils.ArtistsJson)
 	if err != nil {
 		log.Fatal(err)
@@ -23,23 +34,13 @@ func main() {
 
 	err = utils.ReadJson("json/locations.json", &utils.LocationsJson)
 	if err != nil {
-		log.Fatal(RED, err)
+		log.Fatal(utils.RED, err)
 	}
 
 	err = utils.ReadJson("json/relation.json", &utils.RelationJson)
 	if err != nil {
-		log.Fatal(RED, err)
+		log.Fatal(utils.RED, err)
 	}
 
-	scripts := http.FileServer(http.Dir("./templates/scripts"))
-	http.Handle("/scripts/", http.StripPrefix("/scripts/", scripts))
-
-	http.HandleFunc("/", handlers.HomeHandler)
-	http.HandleFunc("/searchbar", handlers.SearchBarHandler)
-	http.HandleFunc("/artist", handlers.ArtistHandler)
-	http.HandleFunc("/artists", handlers.ArtistsHandler)
-	http.HandleFunc("/filters", handlers.FiltersHandler)
-
-	log.Println(GREEN, "Server started at http://localhost:8080", NONE)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Println(utils.GREEN, "Data loaded", utils.NONE)
 }

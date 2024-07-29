@@ -3,7 +3,6 @@ package handlers
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"groupie-tracker/datatypes"
 	"groupie-tracker/utils"
 	"net/http"
@@ -14,6 +13,7 @@ import (
 func SearchBarHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		ErrorHandler(w, errors.New("400 | Wrong method"))
+		return
 	}
 
 	var s datatypes.SearchRequest
@@ -21,6 +21,7 @@ func SearchBarHandler(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&s)
 	if err != nil {
 		ErrorHandler(w, errors.New("500 | Internal server error: Could not decode json"))
+		return
 	}
 
 	var response datatypes.SearchReponse
@@ -80,6 +81,5 @@ func SearchBarHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Println(response)
 	json.NewEncoder(w).Encode(response)
 }
