@@ -32,30 +32,28 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	http.HandleFunc("/", Handler)
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
-	http.HandleFunc("/", Handler)
-	log.Printf("Server starting on port %s", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+
+	log.Printf("Server is ready to handle requests at :%s", port)
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func getData() {
-	err := utils.ReadJson("json/artists.json", &utils.ArtistsJson)
-	if err != nil {
+	if err := utils.ReadJson("json/artists.json", &utils.ArtistsJson); err != nil {
 		log.Printf("Error loading artists.json: %v", err)
 	}
-
-	err = utils.ReadJson("json/locations.json", &utils.LocationsJson)
-	if err != nil {
+	if err := utils.ReadJson("json/locations.json", &utils.LocationsJson); err != nil {
 		log.Printf("Error loading locations.json: %v", err)
 	}
-
-	err = utils.ReadJson("json/relation.json", &utils.RelationJson)
-	if err != nil {
+	if err := utils.ReadJson("json/relation.json", &utils.RelationJson); err != nil {
 		log.Printf("Error loading relation.json: %v", err)
 	}
-
-	log.Println("Data loaded")
+	log.Println("Data loaded successfully")
 }
